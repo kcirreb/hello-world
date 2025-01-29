@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { earth, illumination, clouds } from "./earth";
 
 const scene = new THREE.Scene();
 
@@ -17,20 +18,19 @@ document.body.appendChild(renderer.domElement);
 
 new OrbitControls(camera, renderer.domElement);
 
-const loader = new THREE.TextureLoader();
-const geometry = new THREE.IcosahedronGeometry(1, 12);
-const material = new THREE.MeshStandardMaterial({
-  map: loader.load("textures/earth-daymap.jpg"),
-});
-const earth = new THREE.Mesh(geometry, material);
-scene.add(earth);
+const earthGroup = new THREE.Group();
+earthGroup.add(earth, illumination, clouds);
+earthGroup.rotation.z = -23.4 * (Math.PI / 180);
+scene.add(earthGroup);
 
-const light = new THREE.HemisphereLight(0xffffff, 0x000000);
+const light = new THREE.DirectionalLight(0xffffff);
+light.position.set(-2, 0.5, 1.5);
 scene.add(light);
 
 function animate() {
-  earth.rotation.x += 0.001;
   earth.rotation.y += 0.001;
+  illumination.rotation.y += 0.001;
+  clouds.rotation.y += 0.0015;
 
   renderer.render(scene, camera);
 }
