@@ -12,7 +12,7 @@ const earth = new THREE.Mesh(
 
 const illumination = new THREE.Mesh(
   geometry,
-  new THREE.MeshStandardMaterial({
+  new THREE.MeshBasicMaterial({
     map: loader.load("textures/earth-nightmap.jpg"),
     blending: THREE.AdditiveBlending,
   })
